@@ -23,5 +23,8 @@ public:
     string dest();
     string comp();
     string jump();
+private:
+    ifstream asmFile;
+    
 };
 #endif /* Parser_hpp */
