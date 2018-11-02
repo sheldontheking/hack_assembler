@@ -18,13 +18,16 @@ class Parser
 public:
     Parser(string fileName){};
     bool hasMoreCommands();
-    string commandType();
+    void advance();
+    char commandType(string cleanCommand);
     string symbol();
     string dest();
     string comp();
     string jump();
 private:
     ifstream asmFile;
-    
+    string currentCommand;
+    map<char,char> commandTable;
+    string removeComment();
 };
 #endif /* Parser_hpp */
