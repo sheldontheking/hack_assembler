@@ -6,9 +6,10 @@
 //  Copyright © 2018 Zengyu Wei. All rights reserved.
 //
 #include <map>
+#include <iostream>
 #include "Parser.hpp"
 
-Parser::Parser() {
+Parser::Parser(string asmName) {
     //open file stream, print message if open successfully
     asmFile.open(asmName, ios::in);
     if(asmFile.is_open()) {
@@ -16,31 +17,37 @@ Parser::Parser() {
     }
     
     //initialize the map for A/C instruction recognition
-    commandTable.inert(pair <char, char> ('@', 'A'));
-    commandTable.inert(pair <char, char> ('=', 'C'));
-    commandTable.inert(pair <char, char> (';', 'C'));
-    commandTable.inert(pair <char, char> ('A', 'C'));
-    commandTable.inert(pair <char, char> ('M', 'C'));
-    commandTable.inert(pair <char, char> ('D', 'C'));
-    commandTable.inert(pair <char, char> ('-', 'C'));
-    commandTable.inert(pair <char, char> ('!', 'C'));
-    commandTable.inert(pair <char, char> ('+', 'C'));
-    commandTable.inert(pair <char, char> ('&', 'C'));
-    commandTable.inert(pair <char, char> ('|', 'C'));
-    commandTable.inert(pair <char, char> ('(', 'C'));
+    commandTable.insert(pair <char, char> ('@', 'A'));
+    commandTable.insert(pair <char, char> ('=', 'C'));
+    commandTable.insert(pair <char, char> (';', 'C'));
+    commandTable.insert(pair <char, char> ('A', 'C'));
+    commandTable.insert(pair <char, char> ('M', 'C'));
+    commandTable.insert(pair <char, char> ('D', 'C'));
+    commandTable.insert(pair <char, char> ('-', 'C'));
+    commandTable.insert(pair <char, char> ('!', 'C'));
+    commandTable.insert(pair <char, char> ('+', 'C'));
+    commandTable.insert(pair <char, char> ('&', 'C'));
+    commandTable.insert(pair <char, char> ('|', 'C'));
+    commandTable.insert(pair <char, char> ('(', 'C'));
 }
 
 bool Parser::hasMoreCommands() {
     return !asmFile.eof();
 }
 
-string Parser::advance() {
+void Parser::advance() {
     bool commandFound = false;
     int lineNum = 0;
     
+    while(!commandFound && getline(asmFile, currentCommand)) {
+        
+    }
 }
           
 string Parser::removeComment() {
-    size_t commentPos = 
-    currentCommand =
+    size_t commentPos = currentCommand.find("//");
+    if(commentPos != string::npos) {
+        currentCommand = currentCommand.erase(commentPos, currentCommand.length());
+    }
+    return currentCommand;
 }

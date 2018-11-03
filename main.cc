@@ -5,7 +5,7 @@
 //  Created by Zengyu Wei on 10/25/18.
 //  Copyright © 2018 Zengyu Wei. All rights reserved.
 //
-#include <fstream>w
+#include <fstream>
 #include <iostream>
 using namespace std;
 

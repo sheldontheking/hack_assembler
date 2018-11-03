@@ -9,6 +9,7 @@
 #ifndef Parser_hpp
 #define Parser_hpp
 
+#include <fstream>
 #include <stdio.h>
 #include <string>
 using namespace std;
@@ -16,7 +17,7 @@ using namespace std;
 class Parser
 {
 public:
-    Parser(string fileName){};
+    Parser(string asmName);
     bool hasMoreCommands();
     void advance();
     char commandType(string cleanCommand);
