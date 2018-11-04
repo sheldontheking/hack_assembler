@@ -30,7 +30,9 @@ Parser::Parser(string asmName) {
     //line number start at 0
     lineNum = 0;
     //testing
-    cout << symbol("D=M") << endl;;
+    currentCommand = "ADM;JMP";
+    
+    cout << jump() << endl;
 }
 
 bool Parser::hasMoreCommands() {
@@ -65,7 +67,43 @@ string Parser::symbol(string temp) {
 }
 
 string Parser::dest() {
+    size_t equalPos = currentCommand.find("=");
+    if(equalPos != string::npos) {
+        return currentCommand.substr(0,equalPos);
+    } else {
+        return "error: can not find equal sign, when trying to find dest";
+    }
     
+    return "error: command is unexpected";
+}
+
+string Parser::comp() {
+    size_t equalPos = currentCommand.find("=");
+    size_t semiPos = currentCommand.find(";");
+    
+    if(equalPos != string::npos) {
+        if(semiPos != string::npos) {
+            //dest = comp ; jump
+            return currentCommand.substr(equalPos + 1, semiPos - equalPos - 1);
+        }
+        //dest = comp
+        return currentCommand.substr(equalPos + 1, currentCommand.length() - equalPos - 1);
+    } else {
+        //comp ; jump
+        return currentCommand.substr(0, semiPos);
+    }
+    
+    return "error: command is unexpected";
+}
+
+string Parser::jump() {
+    size_t semiPos = currentCommand.find(";");
+    
+    if(semiPos != string::npos) {
+        return currentCommand.substr(semiPos+1, currentCommand.length());
+    }
+    
+    return "error: command is unexpected";
 }
 
 string Parser::removeComment(string curr) {
