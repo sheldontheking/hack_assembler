@@ -9,6 +9,8 @@
 #ifndef Parser_hpp
 #define Parser_hpp
 
+#include <map>
+#include <algorithm>
 #include <fstream>
 #include <stdio.h>
 #include <string>
@@ -21,14 +23,15 @@ public:
     bool hasMoreCommands();
     void advance();
     char commandType(string cleanCommand);
-    string symbol();
+    string symbol(string temp);
     string dest();
     string comp();
     string jump();
 private:
+    int lineNum;
     ifstream asmFile;
     string currentCommand;
-    map<char,char> commandTable;
-    string removeComment();
+    map<char,char> commandMap;
+    string removeComment(string curr);
 };
 #endif /* Parser_hpp */

@@ -7,6 +7,8 @@
 //
 #include <map>
 #include <iostream>
+#include <algorithm>
+#include <string>
 #include "Parser.hpp"
 
 Parser::Parser(string asmName) {
@@ -17,18 +19,18 @@ Parser::Parser(string asmName) {
     }
     
     //initialize the map for A/C instruction recognition
-    commandTable.insert(pair <char, char> ('@', 'A'));
-    commandTable.insert(pair <char, char> ('=', 'C'));
-    commandTable.insert(pair <char, char> (';', 'C'));
-    commandTable.insert(pair <char, char> ('A', 'C'));
-    commandTable.insert(pair <char, char> ('M', 'C'));
-    commandTable.insert(pair <char, char> ('D', 'C'));
-    commandTable.insert(pair <char, char> ('-', 'C'));
-    commandTable.insert(pair <char, char> ('!', 'C'));
-    commandTable.insert(pair <char, char> ('+', 'C'));
-    commandTable.insert(pair <char, char> ('&', 'C'));
-    commandTable.insert(pair <char, char> ('|', 'C'));
-    commandTable.insert(pair <char, char> ('(', 'C'));
+    commandMap.insert(pair <char, char> ('@', 'A'));
+    commandMap.insert(pair <char, char> ('A', 'C'));
+    commandMap.insert(pair <char, char> ('M', 'C'));
+    commandMap.insert(pair <char, char> ('D', 'C'));
+    commandMap.insert(pair <char, char> ('-', 'C'));
+    commandMap.insert(pair <char, char> ('!', 'C'));
+    commandMap.insert(pair <char, char> ('(', 'L'));
+    
+    //line number start at 0
+    lineNum = 0;
+    //testing
+    cout << symbol("D=M") << endl;;
 }
 
 bool Parser::hasMoreCommands() {
@@ -37,17 +39,41 @@ bool Parser::hasMoreCommands() {
 
 void Parser::advance() {
     bool commandFound = false;
-    int lineNum = 0;
+    string curr;
     
-    while(!commandFound && getline(asmFile, currentCommand)) {
-        
+    while(!commandFound && getline(asmFile, curr)) {
+        curr = removeComment(curr);
+        if(!curr.empty()) {
+            commandFound = true;
+            lineNum++;
+        }
     }
+    
+    currentCommand = curr;
 }
-          
-string Parser::removeComment() {
-    size_t commentPos = currentCommand.find("//");
-    if(commentPos != string::npos) {
-        currentCommand = currentCommand.erase(commentPos, currentCommand.length());
+
+char Parser::commandType(string cleanCommand) {
+    if(commandMap.find(cleanCommand[0]) != commandMap.end()) {
+        return commandMap[cleanCommand[0]];
     }
+    return '!';
+}
+
+string Parser::symbol(string temp) {
+    currentCommand.erase(remove_if(currentCommand.begin(), currentCommand.end(), ::isalnum), currentCommand.end());
     return currentCommand;
+}
+
+string Parser::dest() {
+    
+}
+
+string Parser::removeComment(string curr) {
+    //remove space and parts of the string after "//"
+    curr.erase(remove_if(curr.begin(), curr.end(), ::isspace), curr.end());
+    size_t commentPos = curr.find("//");
+    if(commentPos != string::npos) {
+        curr = curr.erase(commentPos, curr.length());
+    }
+    return curr;
 }
