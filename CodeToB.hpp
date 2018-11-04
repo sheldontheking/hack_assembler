@@ -11,15 +11,19 @@
 
 #include <stdio.h>
 #include <string>
+#include <map>
 
 using namespace std;
 
 class CodeToB {
 public:
     CodeToB();
-    int dest(string mnemonic);
-    int comp(string mnemonic);
-    int jump(string mnemonic);
-    
+    string dest(string mnemonic);
+    string comp(string mnemonic);
+    string jump(string mnemonic);
+private:
+    map<string,string> destToB;
+    map<string,string> compToB;
+    map<string,string> jumpToB;
 };
 #endif /* CodeToB_hpp */

@@ -22,11 +22,12 @@ public:
     Parser(string asmName);
     bool hasMoreCommands();
     void advance();
-    char commandType(string cleanCommand);
-    string symbol(string temp);
+    char commandType();
+    string symbol();
     string dest();
     string comp();
     string jump();
+    int getLineNum();
 private:
     int lineNum;
     ifstream asmFile;

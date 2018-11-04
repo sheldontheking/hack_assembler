@@ -9,6 +9,7 @@
 #ifndef SymbolTable_hpp
 #define SymbolTable_hpp
 
+#include <map>
 #include <stdio.h>
 #include <string>
 using namespace std;
@@ -19,6 +20,7 @@ public:
     void addEntry(string symbol, int address);
     bool contains(string symbol);
     int getAddress(string symbol);
-    
+private:
+    map<string,int> symbolMap;
 };
 #endif /* SymbolTable_hpp */

@@ -31,7 +31,6 @@ Parser::Parser(string asmName) {
     lineNum = 0;
     //testing
     currentCommand = "ADM;JMP";
-    
     cout << jump() << endl;
 }
 
@@ -54,15 +53,16 @@ void Parser::advance() {
     currentCommand = curr;
 }
 
-char Parser::commandType(string cleanCommand) {
-    if(commandMap.find(cleanCommand[0]) != commandMap.end()) {
-        return commandMap[cleanCommand[0]];
+char Parser::commandType() {
+    if(commandMap.find(currentCommand[0]) != commandMap.end()) {
+        return commandMap[currentCommand[0]];
     }
     return '!';
 }
 
-string Parser::symbol(string temp) {
-    currentCommand.erase(remove_if(currentCommand.begin(), currentCommand.end(), ::isalnum), currentCommand.end());
+string Parser::symbol() {
+    currentCommand.erase(remove_if(currentCommand.begin(), currentCommand.end(), ::ispunct), currentCommand.end());
+    cout << currentCommand << endl;
     return currentCommand;
 }
 
@@ -114,4 +114,8 @@ string Parser::removeComment(string curr) {
         curr = curr.erase(commentPos, curr.length());
     }
     return curr;
+}
+
+int Parser::getLineNum() {
+    return lineNum;
 }
