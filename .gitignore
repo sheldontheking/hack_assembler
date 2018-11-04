@@ -31,5 +31,6 @@
 *.out
 *.app
 
-.DS_Store
-.xcodeproj
+*.hack
+*.DS_Store
+*.xcodeproj
