@@ -36,11 +36,10 @@ int main(int argc, const char * argv[]) {
     while(firstP.hasMoreCommands()) {
         firstP.advance();
         
-        if(firstP.commandType() == '!' || firstP.commandType() == 'L') {
+        if(firstP.commandType() == 'L') {
             symbolTable.addEntry(firstP.symbol(), lineNumberMain);
-        }
-        
-        if(firstP.commandType() == 'A' || firstP.commandType() == 'C') {
+            //cout << "symbol is:" << firstP.symbol() << " line number is: " << lineNumberMain<<endl;
+        } else if(firstP.commandType() == 'A' || firstP.commandType() == 'C') {
             lineNumberMain++;
         }
     }
@@ -50,6 +49,7 @@ int main(int argc, const char * argv[]) {
     CodeToB translate;
     Parser secondP(asmName);
     assemFile.open(assemName);
+    int newPos = 16;
     
     if(assemFile.is_open()) {
         cout << "output file opened" << endl;
@@ -61,14 +61,25 @@ int main(int argc, const char * argv[]) {
         if(secondP.commandType() == 'A') {
             assemFile << "0";
             string temp = secondP.symbol();
-            cout << "entered here" << endl;
+            //cout << "current working on symbol:" << temp << endl;
+            cout << "added symbol:" << temp << "\t"  << (symbolTable.contains(temp)) << endl;
+            
             if(find_if(temp.begin(), temp.end(), ::isalpha) == temp.end()) {
-                
                 bitset<15> binary_A (stoi(temp));
                 assemFile << binary_A << endl;
+            } else if(!symbolTable.contains(temp)) {
+                symbolTable.addEntry(temp, newPos++);
+            }
+            
+            if(symbolTable.contains(temp)) {
+                bitset<15> binary_B (symbolTable.getAddress(temp));
+                assemFile << binary_B << endl;
             }
         } else if(secondP.commandType() == 'C') {
-            
+            assemFile << "111";
+            assemFile << translate.comp(secondP.comp());
+            assemFile << translate.dest(secondP.dest());
+            assemFile << translate.jump(secondP.jump()) << endl;
         }
     }
     

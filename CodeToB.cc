@@ -7,6 +7,7 @@
 //
 
 #include "CodeToB.hpp"
+#include <iostream>
 
 CodeToB::CodeToB() {
     destToB.insert(pair <string, string> ("", "000"));
@@ -61,19 +62,19 @@ string CodeToB::dest(string mnemonic) {
     if(destToB.find(mnemonic) != destToB.end()) {
         return destToB[mnemonic];
     }
-    return "error: can not find dest command";
+    return "";
 }
 
 string CodeToB::comp(string mnemonic) {
     if(compToB.find(mnemonic) != compToB.end()) {
         return compToB[mnemonic];
     }
-    return "error: can not find comp command";
+    return "";
 }
 
 string CodeToB::jump(string mnemonic) {
     if(jumpToB.find(mnemonic) != jumpToB.end()) {
         return jumpToB[mnemonic];
     }
-    return "error: can not find jump command";
+    return "";
 }

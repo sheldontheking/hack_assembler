@@ -47,8 +47,7 @@ SymbolTable::SymbolTable() {
 void SymbolTable::addEntry(string symbol, int address) {
     if(symbolMap.find(symbol) == symbolMap.end()) {
         symbolMap.insert(pair <string, int> (symbol, address));
-    } else {
-        cout << "symbol already exists" << endl;
+        cout << "added symbol:" << symbol << " address: " << address << endl;
     }
 }
 

@@ -22,6 +22,8 @@ Parser::Parser(string asmName) {
     commandMap.insert(pair <char, char> ('@', 'A'));
     commandMap.insert(pair <char, char> ('A', 'C'));
     commandMap.insert(pair <char, char> ('M', 'C'));
+    commandMap.insert(pair <char, char> ('0', 'C'));
+    commandMap.insert(pair <char, char> ('1', 'C'));
     commandMap.insert(pair <char, char> ('D', 'C'));
     commandMap.insert(pair <char, char> ('-', 'C'));
     commandMap.insert(pair <char, char> ('!', 'C'));
@@ -30,8 +32,8 @@ Parser::Parser(string asmName) {
     //line number start at 0
     lineNum = 0;
     //testing
-    currentCommand = "ADM;JMP";
-    cout << jump() << endl;
+    //currentCommand = "ADM;JMP";
+    //cout << jump() << endl;
 }
 
 bool Parser::hasMoreCommands() {
@@ -62,7 +64,6 @@ char Parser::commandType() {
 
 string Parser::symbol() {
     currentCommand.erase(remove_if(currentCommand.begin(), currentCommand.end(), ::ispunct), currentCommand.end());
-    cout << currentCommand << endl;
     return currentCommand;
 }
 
@@ -71,10 +72,10 @@ string Parser::dest() {
     if(equalPos != string::npos) {
         return currentCommand.substr(0,equalPos);
     } else {
-        return "error: can not find equal sign, when trying to find dest";
+        return "";
     }
     
-    return "error: command is unexpected";
+    return "";
 }
 
 string Parser::comp() {
@@ -93,7 +94,7 @@ string Parser::comp() {
         return currentCommand.substr(0, semiPos);
     }
     
-    return "error: command is unexpected";
+    return "";
 }
 
 string Parser::jump() {
@@ -103,7 +104,7 @@ string Parser::jump() {
         return currentCommand.substr(semiPos+1, currentCommand.length());
     }
     
-    return "error: command is unexpected";
+    return "";
 }
 
 string Parser::removeComment(string curr) {
